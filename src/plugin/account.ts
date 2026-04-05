@@ -1,8 +1,8 @@
 import { randomBytes } from "node:crypto";
 import { promises as fs } from "node:fs";
+import { mkdir } from "node:fs/promises";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
-import lockfile from "proper-lockfile";
 import type { RotationStrategy } from "./rotation.js";
 import {
   type AccountWithMetrics,
@@ -81,21 +81,22 @@ async function ensureFileExists(path: string): Promise<void> {
   }
 }
 
+const _locks = new Map<string, Promise<void>>();
+
 async function withFileLock<T>(path: string, fn: () => Promise<T>): Promise<T> {
-  await ensureFileExists(path);
-  const release = await lockfile.lock(path, {
-    stale: 10000,
-    retries: {
-      retries: 5,
-      minTimeout: 100,
-      maxTimeout: 1000,
-      factor: 2,
-    },
-  });
+  const dir = dirname(path);
+  await mkdir(dir, { recursive: true });
+  while (_locks.has(path)) {
+    await _locks.get(path);
+  }
+  let resolve!: () => void;
+  const p = new Promise<void>((r) => { resolve = r; });
+  _locks.set(path, p);
   try {
     return await fn();
   } finally {
-    await release().catch(() => undefined);
+    _locks.delete(path);
+    resolve();
   }
 }
 
