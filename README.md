@@ -1,4 +1,4 @@
-# opencode-qwencode-auth
+# @dvaji/opencode-qwen-auth
 
 OpenCode plugin for Qwen Code OAuth authentication. Provides free access to Qwen Coder models through the official OAuth flow.
 
@@ -12,23 +12,23 @@ OpenCode plugin for Qwen Code OAuth authentication. Provides free access to Qwen
 
 ## Installation
 
-### From Git Repository (Recommended)
+### From npm (Recommended)
 
 Add to your OpenCode config (`~/.config/opencode/opencode.json`):
 
 ```json
 {
-  "plugin": ["opencode-qwencode-auth@git+https://github.com/dvaJi/opencode-qwencode-auth.git"]
+  "plugin": ["@dvaji/opencode-qwen-auth"]
 }
 ```
 
 OpenCode will automatically install and load the plugin at startup.
 
-### From npm
+### From Git Repository (Alternative)
 
 ```json
 {
-  "plugin": ["opencode-qwencode-auth"]
+  "plugin": ["@dvaji/opencode-qwen-auth@git+https://github.com/dvaJi/opencode-qwencode-auth.git"]
 }
 ```
 

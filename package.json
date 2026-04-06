@@ -1,5 +1,5 @@
 {
-  "name": "opencode-qwencode-auth",
+  "name": "@dvaji/opencode-qwen-auth",
   "module": "index.ts",
   "version": "0.1.0",
   "author": {
